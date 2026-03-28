@@ -1,0 +1,22 @@
+kind: capability
+name: acmecrm_specialist
+version: 1.2.0
+description: Execute segmented marketing ops in AcmeCRM with policy-compliant tooling.
+tools:
+  - ref: tools/acmecrm/tool.yaml
+skills:
+  - ref: skills/acmecrm-segmentation/SKILL.md
+  - ref: skills/acmecrm-campaign-export/SKILL.md
+policies:
+  - ref: policies/pii-and-outbound/policy.yaml
+evals:
+  suite: evals/acmecrm-specialist/
+  required:
+    - golden_happy_path
+    - auth_failure_path
+    - rate_limit_recovery
+artefacts:
+  emits:
+    - type: segment_definition
+    - type: acmecrm_export_zip
+    - type: campaign_audit_note

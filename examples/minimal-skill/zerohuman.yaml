@@ -1,0 +1,17 @@
+name: Minimal Skill Example
+slug: minimal-skill-example
+version: 0.1.0
+description: The simplest possible ZeroHuman package — a single skill in three files.
+package_type: skill
+objects:
+  - type: skill
+    id: hello-world
+    path: skills/hello-world
+compatibility:
+  agents:
+    - claude-code
+    - github-copilot
+    - cursor
+    - codex
+    - opencode
+license: MIT

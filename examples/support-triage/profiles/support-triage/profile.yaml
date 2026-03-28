@@ -1,0 +1,22 @@
+kind: profile
+name: support_triage_agent
+role: support_triage_manager
+runtime:
+  engine: target_agent_runtime
+  language: python
+model:
+  default: gpt-5.4
+budgets:
+  per_run_tokens_max: 60000
+  monthly_usd_max: 150
+concurrency:
+  max_active_tasks: 5
+capabilities:
+  - ref: capabilities/support-triage/capability.yaml
+identity:
+  soul: profiles/support-triage/SOUL.md
+operation:
+  heartbeat: profiles/support-triage/HEARTBEAT.md
+memory:
+  strategy: session
+  store: redis

@@ -1,0 +1,62 @@
+kind: tool
+name: github_issues
+version: 0.2.0
+description: Interact with the GitHub Issues API. Supports listing, creating, commenting on, and closing issues in a specified repository.
+transport: http
+base_url: https://api.github.com
+auth:
+  scheme: api_key
+  token_source: secret_store
+  header: Authorization
+  prefix: "Bearer "
+permissions:
+  network:
+    allowed_domains:
+      - api.github.com
+  data:
+    default_classification: internal
+approval:
+  required: false
+interface:
+  input_schema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      operation:
+        type: string
+        enum:
+          - list_issues
+          - get_issue
+          - create_issue
+          - add_comment
+          - close_issue
+        description: The GitHub Issues operation to perform.
+      owner:
+        type: string
+        description: Repository owner (user or organization).
+      repo:
+        type: string
+        description: Repository name.
+      issue_number:
+        type: integer
+        description: Issue number (required for get, comment, and close operations).
+      payload:
+        type: object
+        description: Operation-specific parameters (title, body, labels, etc.).
+    required:
+      - operation
+      - owner
+      - repo
+  output_schema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      ok:
+        type: boolean
+      result:
+        type: object
+        description: GitHub API response data.
+      error:
+        type: string
+    required:
+      - ok

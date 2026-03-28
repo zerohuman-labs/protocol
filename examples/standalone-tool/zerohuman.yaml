@@ -1,0 +1,30 @@
+name: GitHub Issues Tool
+slug: github-issues-tool
+version: 0.2.0
+description: Standalone tool for interacting with the GitHub Issues API — list, create, comment, and close issues.
+package_type: tool
+objects:
+  - type: tool
+    id: github-issues
+    path: tools/github-issues
+compatibility:
+  agents:
+    - claude-code
+    - github-copilot
+    - cursor
+    - codex
+    - opencode
+source:
+  repo: https://github.com/example-org/zerohuman-github-issues
+license: MIT
+
+# Protocol-level metadata
+protocol: zerohuman
+protocol_version: 0.1.0
+indexing:
+  discoverable: true
+  tags:
+    - github
+    - issues
+    - project-management
+    - developer-tools

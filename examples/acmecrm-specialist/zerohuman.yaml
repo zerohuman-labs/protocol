@@ -1,0 +1,49 @@
+name: AcmeCRM Specialist
+slug: acmecrm-specialist
+version: 1.2.0
+description: Specialist capability package for AcmeCRM marketing operations — segmentation, campaign exports, and policy-compliant tooling.
+package_type: pack
+objects:
+  - type: tool
+    id: acmecrm-api
+    path: tools/acmecrm
+  - type: skill
+    id: acmecrm-segmentation
+    path: skills/acmecrm-segmentation
+  - type: skill
+    id: acmecrm-campaign-export
+    path: skills/acmecrm-campaign-export
+  - type: capability
+    id: acmecrm-specialist
+    path: capabilities/acmecrm-specialist
+  - type: profile
+    id: acmecrm-specialist-agent
+    path: profiles/acmecrm-specialist
+  - type: policy
+    id: pii-and-outbound
+    path: policies/pii-and-outbound
+compatibility:
+  agents:
+    - claude-code
+    - github-copilot
+    - cursor
+    - codex
+    - opencode
+source:
+  repo: https://github.com/example-org/zerohuman-acmecrm-specialist
+license: Apache-2.0
+
+# Protocol-level metadata
+protocol: zerohuman
+protocol_version: 0.1.0
+indexing:
+  discoverable: true
+  tags:
+    - crm
+    - marketing-ops
+    - segmentation
+    - campaigns
+trust:
+  publisher: community
+  signatures:
+    required: true

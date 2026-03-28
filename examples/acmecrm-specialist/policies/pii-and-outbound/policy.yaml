@@ -1,0 +1,29 @@
+kind: policy
+name: pii_and_outbound_controls
+version: 0.3.0
+data_sensitivity:
+  classifications:
+    pii:
+      redaction: required
+      retention_days: 30
+tool_controls:
+  default_needs_approval: true
+  allow:
+    - tool: acmecrm_api
+      operations:
+        - get_contact
+        - upsert_contact
+        - list_segments
+  deny:
+    - tool: acmecrm_api
+      operations:
+        - export_campaign
+      unless:
+        human_gate: true
+network_policy:
+  deny_by_default: true
+  allow_domains:
+    - ${ACMECRM_DOMAIN}
+observability:
+  tracing: enabled
+  log_tool_io: redacted

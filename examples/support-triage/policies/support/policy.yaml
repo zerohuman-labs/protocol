@@ -1,0 +1,33 @@
+kind: policy
+name: support_controls
+version: 0.2.0
+data_sensitivity:
+  classifications:
+    customer_data:
+      redaction: required
+      retention_days: 90
+    internal_notes:
+      redaction: not_required
+      retention_days: 365
+tool_controls:
+  default_needs_approval: true
+  allow:
+    - tool: ticketing_api
+      operations:
+        - read_ticket
+        - add_internal_note
+        - draft_reply
+  deny:
+    - tool: ticketing_api
+      operations:
+        - send_reply
+        - update_customer_record
+      unless:
+        human_gate: true
+network_policy:
+  deny_by_default: true
+  allow_domains:
+    - ${TICKETING_DOMAIN}
+observability:
+  tracing: enabled
+  log_tool_io: redacted

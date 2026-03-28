@@ -1,0 +1,58 @@
+kind: tool
+name: acmecrm_api
+version: 0.4.0
+description: Typed REST API integration for an AcmeCRM instance. Supports contact management, segment operations, and campaign data exports.
+transport: http
+base_url: ${ACMECRM_BASE_URL}
+auth:
+  scheme: oauth2
+  authorization_url: ${ACMECRM_OAUTH_AUTH_URL}
+  token_url: ${ACMECRM_OAUTH_TOKEN_URL}
+  token_source: secret_store
+  scopes:
+    - contacts:read
+    - contacts:write
+    - segments:read
+    - campaigns:read
+permissions:
+  network:
+    allowed_domains:
+      - ${ACMECRM_DOMAIN}
+  data:
+    default_classification: pii
+approval:
+  required: true
+interface:
+  input_schema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      operation:
+        type: string
+        enum:
+          - get_contact
+          - upsert_contact
+          - list_segments
+          - export_campaign
+        description: The API operation to perform.
+      payload:
+        type: object
+        description: Operation-specific parameters.
+    required:
+      - operation
+      - payload
+  output_schema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      ok:
+        type: boolean
+        description: Whether the operation succeeded.
+      result:
+        type: object
+        description: Operation-specific response data.
+      error:
+        type: string
+        description: Error message if ok is false.
+    required:
+      - ok

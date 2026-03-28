@@ -1,0 +1,53 @@
+kind: tool
+name: ticketing_api
+version: 0.3.0
+description: Integration with a ticketing system for reading tickets, adding internal notes, drafting replies, and managing customer records. Supports structured ticket data and agent handoff metadata.
+transport: http
+base_url: ${TICKETING_BASE_URL}
+auth:
+  scheme: api_key
+  token_source: secret_store
+  header: X-API-Key
+permissions:
+  network:
+    allowed_domains:
+      - ${TICKETING_DOMAIN}
+  data:
+    default_classification: internal
+approval:
+  required: true
+interface:
+  input_schema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      operation:
+        type: string
+        enum:
+          - read_ticket
+          - add_internal_note
+          - draft_reply
+          - send_reply
+          - update_customer_record
+        description: The ticketing operation to perform.
+      ticket_id:
+        type: string
+        description: The ticket identifier.
+      payload:
+        type: object
+        description: Operation-specific parameters.
+    required:
+      - operation
+      - ticket_id
+  output_schema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      ok:
+        type: boolean
+      result:
+        type: object
+      error:
+        type: string
+    required:
+      - ok

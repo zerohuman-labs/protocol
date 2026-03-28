@@ -1,0 +1,22 @@
+kind: profile
+name: acmecrm_specialist_agent
+role: marketing_ops_specialist
+runtime:
+  engine: target_agent_runtime
+  language: python
+model:
+  default: gpt-5.4
+budgets:
+  per_run_tokens_max: 120000
+  monthly_usd_max: 200
+concurrency:
+  max_active_tasks: 2
+capabilities:
+  - ref: capabilities/acmecrm-specialist/capability.yaml
+identity:
+  soul: profiles/acmecrm-specialist/SOUL.md
+operation:
+  heartbeat: profiles/acmecrm-specialist/HEARTBEAT.md
+memory:
+  strategy: session
+  store: sqlite

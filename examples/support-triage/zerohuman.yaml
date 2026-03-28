@@ -1,0 +1,46 @@
+name: Support Triage
+slug: support-triage
+version: 0.8.0
+description: Classify inbound support tickets and route to specialist agents with guarded tool actions and structured handoffs.
+package_type: pack
+objects:
+  - type: tool
+    id: ticketing-api
+    path: tools/ticketing
+  - type: skill
+    id: triage-routing
+    path: skills/triage-routing
+  - type: capability
+    id: support-triage
+    path: capabilities/support-triage
+  - type: profile
+    id: support-triage-agent
+    path: profiles/support-triage
+  - type: policy
+    id: support-controls
+    path: policies/support
+compatibility:
+  agents:
+    - claude-code
+    - github-copilot
+    - cursor
+    - codex
+    - opencode
+source:
+  repo: https://github.com/example-org/zerohuman-support-triage
+license: Apache-2.0
+
+# Protocol-level metadata
+protocol: zerohuman
+protocol_version: 0.1.0
+indexing:
+  discoverable: true
+  tags:
+    - support
+    - triage
+    - ticketing
+    - customer-service
+trust:
+  publisher: community
+  signatures:
+    required: true

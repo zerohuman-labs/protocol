@@ -1,0 +1,40 @@
+{
+  "kind": "artifact",
+  "artifact_id": "artifact_01HZY3XKQM9V7WNBT4P2RJCE8A",
+  "type": "campaign_audit_note",
+  "created_at": "2026-03-28T10:04:12Z",
+  "trace": {
+    "trace_id": "trace_01HZY3XKQM9V7WNBT4P2RJCE8B",
+    "workflow": "crm_ops"
+  },
+  "inputs": {
+    "task_id": "task_crm_segmentation_042",
+    "profile": "acmecrm_specialist_agent",
+    "capabilities": ["acmecrm_specialist@1.2.0"],
+    "skills_activated": ["crm-segmentation@1.0.0"],
+    "tools_invoked": ["acmecrm_api@0.4.0"]
+  },
+  "outputs": {
+    "summary": "Updated segment 'high-value-q1' — added filter for contacts with LTV > $5,000 and last activity within 90 days. Membership changed from 1,204 to 892 contacts.",
+    "links": [
+      {
+        "rel": "crm-segment",
+        "href": "crm://segments/high-value-q1"
+      }
+    ],
+    "files": []
+  },
+  "checks": {
+    "policy": "pii_and_outbound_controls@0.3.0",
+    "data_classification": "pii",
+    "redaction_applied": true,
+    "approvals": [
+      {
+        "tool": "acmecrm_api",
+        "operation": "upsert_contact",
+        "approved_by": "human",
+        "at": "2026-03-28T10:02:01Z"
+      }
+    ]
+  }
+}

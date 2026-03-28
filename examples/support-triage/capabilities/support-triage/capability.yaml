@@ -1,0 +1,21 @@
+kind: capability
+name: support_triage
+version: 0.8.0
+description: Classify inbound tickets and route to specialist agents with guarded tool actions.
+tools:
+  - ref: tools/ticketing/tool.yaml
+skills:
+  - ref: skills/triage-routing/SKILL.md
+policies:
+  - ref: policies/support/policy.yaml
+evals:
+  suite: evals/support-triage/
+  required:
+    - route_correctness
+    - no_unapproved_updates
+    - escalation_on_ambiguity
+artefacts:
+  emits:
+    - type: triage_decision
+    - type: customer_reply_draft
+    - type: escalation_note
