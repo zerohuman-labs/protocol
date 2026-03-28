@@ -1,0 +1,22 @@
+kind: profile
+name: refunds_specialist_agent
+role: refunds_specialist
+runtime:
+  engine: target_agent_runtime
+  language: python
+model:
+  default: gpt-5.4
+budgets:
+  per_run_tokens_max: 40000
+  monthly_usd_max: 80
+concurrency:
+  max_active_tasks: 3
+capabilities:
+  - ref: capabilities/support-triage/capability.yaml
+identity:
+  soul: profiles/refunds-specialist/SOUL.md
+operation:
+  heartbeat: profiles/refunds-specialist/HEARTBEAT.md
+memory:
+  strategy: session
+  store: redis

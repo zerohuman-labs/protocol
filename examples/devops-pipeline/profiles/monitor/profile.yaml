@@ -1,0 +1,25 @@
+kind: profile
+name: monitor_agent
+role: production_monitor
+runtime:
+  engine: target_agent_runtime
+  language: python
+model:
+  default: gpt-5.4
+budgets:
+  per_run_tokens_max: 40000
+  monthly_usd_max: 100
+concurrency:
+  max_active_tasks: 2
+capabilities:
+  - ref: capabilities/deploy-ops/capability.yaml
+identity:
+  soul: profiles/monitor/SOUL.md
+operation:
+  heartbeat: profiles/monitor/HEARTBEAT.md
+memory:
+  strategy: session
+  store: sqlite
+handoffs:
+  - profile: deploy_agent
+    description: Hand back to the deploy agent if a rollback is needed due to post-deploy degradation.

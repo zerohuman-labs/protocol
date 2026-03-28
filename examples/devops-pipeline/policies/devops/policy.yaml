@@ -1,0 +1,48 @@
+kind: policy
+name: devops_controls
+version: 0.2.0
+data_sensitivity:
+  classifications:
+    infrastructure:
+      redaction: not_required
+      retention_days: 365
+    secrets:
+      redaction: required
+      retention_days: 0
+tool_controls:
+  default_needs_approval: false
+  allow:
+    - tool: github_ci
+      operations:
+        - trigger_workflow
+        - get_run_status
+        - get_run_logs
+        - list_check_runs
+        - create_check_run
+    - tool: monitoring
+      operations:
+        - check_health
+        - get_alerts
+        - get_metrics
+        - acknowledge_alert
+    - tool: deploy
+      operations:
+        - create_release
+        - get_deploy_status
+        - promote_to_staging
+  deny:
+    - tool: deploy
+      operations:
+        - promote_to_production
+        - rollback
+      unless:
+        human_gate: true
+network_policy:
+  deny_by_default: true
+  allow_domains:
+    - api.github.com
+    - ${DEPLOY_DOMAIN}
+    - ${MONITORING_DOMAIN}
+observability:
+  tracing: enabled
+  log_tool_io: full

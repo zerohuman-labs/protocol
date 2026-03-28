@@ -20,3 +20,10 @@ operation:
 memory:
   strategy: session
   store: redis
+handoffs:
+  - profile: billing_specialist_agent
+    description: Hand off billing, payment, and invoice issues to the billing specialist.
+  - profile: refunds_specialist_agent
+    description: Hand off refund requests and credit disputes to the refunds specialist.
+  - profile: technical_specialist_agent
+    description: Hand off bugs, integration errors, and technical questions to the technical specialist.

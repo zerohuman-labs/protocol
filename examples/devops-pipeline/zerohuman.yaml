@@ -1,0 +1,65 @@
+name: DevOps Pipeline
+slug: devops-pipeline
+version: 0.5.0
+description: Multi-agent DevOps package with code-backed tools — CI/CD orchestration, deployment, and monitoring agents sharing capabilities with Python implementations.
+package_type: pack
+objects:
+  - type: tool
+    id: github-ci
+    path: tools/github-ci
+  - type: tool
+    id: deploy
+    path: tools/deploy
+  - type: tool
+    id: monitoring
+    path: tools/monitoring
+  - type: skill
+    id: pr-review
+    path: skills/pr-review
+  - type: skill
+    id: incident-response
+    path: skills/incident-response
+  - type: capability
+    id: ci-ops
+    path: capabilities/ci-ops
+  - type: capability
+    id: deploy-ops
+    path: capabilities/deploy-ops
+  - type: profile
+    id: ci-lead-agent
+    path: profiles/ci-lead
+  - type: profile
+    id: deploy-agent
+    path: profiles/deploy
+  - type: profile
+    id: monitor-agent
+    path: profiles/monitor
+  - type: policy
+    id: devops-controls
+    path: policies/devops
+compatibility:
+  agents:
+    - claude-code
+    - github-copilot
+    - cursor
+    - codex
+    - opencode
+source:
+  repo: https://github.com/example-org/zerohuman-devops-pipeline
+license: Apache-2.0
+
+# Protocol-level metadata
+protocol: zerohuman
+protocol_version: 0.1.0
+indexing:
+  discoverable: true
+  tags:
+    - devops
+    - ci-cd
+    - deployment
+    - monitoring
+    - multi-agent
+trust:
+  publisher: community
+  signatures:
+    required: true

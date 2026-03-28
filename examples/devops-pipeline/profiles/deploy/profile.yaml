@@ -1,0 +1,25 @@
+kind: profile
+name: deploy_agent
+role: deployment_specialist
+runtime:
+  engine: target_agent_runtime
+  language: python
+model:
+  default: gpt-5.4
+budgets:
+  per_run_tokens_max: 60000
+  monthly_usd_max: 200
+concurrency:
+  max_active_tasks: 1
+capabilities:
+  - ref: capabilities/deploy-ops/capability.yaml
+identity:
+  soul: profiles/deploy/SOUL.md
+operation:
+  heartbeat: profiles/deploy/HEARTBEAT.md
+memory:
+  strategy: session
+  store: sqlite
+handoffs:
+  - profile: monitor_agent
+    description: Hand off to the monitor agent for post-deploy health verification.

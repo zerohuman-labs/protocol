@@ -1,0 +1,58 @@
+kind: tool
+name: github_ci
+version: 0.3.0
+description: Interact with GitHub CI pipelines — trigger workflows, check run status, read logs, and manage PR checks.
+transport: http
+base_url: https://api.github.com
+auth:
+  scheme: bearer
+  token_source: secret_store
+  header: Authorization
+  prefix: "Bearer "
+permissions:
+  network:
+    allowed_domains:
+      - api.github.com
+  data:
+    default_classification: internal
+approval:
+  required: false
+implementation:
+  language: python
+  entrypoint: handler.py
+  function: handle
+interface:
+  input_schema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      operation:
+        type: string
+        enum:
+          - trigger_workflow
+          - get_run_status
+          - get_run_logs
+          - list_check_runs
+          - create_check_run
+        description: The CI operation to perform.
+      repo:
+        type: string
+        description: Repository in owner/repo format.
+      payload:
+        type: object
+        description: Operation-specific parameters.
+    required:
+      - operation
+      - repo
+  output_schema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      ok:
+        type: boolean
+      result:
+        type: object
+      error:
+        type: string
+    required:
+      - ok

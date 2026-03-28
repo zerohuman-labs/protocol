@@ -1,0 +1,52 @@
+kind: tool
+name: monitoring
+version: 0.2.0
+description: Query production monitoring — check service health, read alert history, and fetch metric snapshots.
+transport: http
+base_url: ${MONITORING_API_URL}
+auth:
+  scheme: api_key
+  token_source: secret_store
+  header: X-Monitor-Key
+permissions:
+  network:
+    allowed_domains:
+      - ${MONITORING_DOMAIN}
+  data:
+    default_classification: internal
+approval:
+  required: false
+implementation:
+  language: python
+  entrypoint: handler.py
+  function: handle
+interface:
+  input_schema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      operation:
+        type: string
+        enum:
+          - check_health
+          - get_alerts
+          - get_metrics
+          - acknowledge_alert
+        description: The monitoring operation to perform.
+      payload:
+        type: object
+        description: Operation-specific parameters (service name, time range, etc.).
+    required:
+      - operation
+  output_schema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      ok:
+        type: boolean
+      result:
+        type: object
+      error:
+        type: string
+    required:
+      - ok

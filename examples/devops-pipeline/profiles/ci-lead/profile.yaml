@@ -1,0 +1,25 @@
+kind: profile
+name: ci_lead_agent
+role: ci_orchestrator
+runtime:
+  engine: target_agent_runtime
+  language: python
+model:
+  default: gpt-5.4
+budgets:
+  per_run_tokens_max: 80000
+  monthly_usd_max: 150
+concurrency:
+  max_active_tasks: 3
+capabilities:
+  - ref: capabilities/ci-ops/capability.yaml
+identity:
+  soul: profiles/ci-lead/SOUL.md
+operation:
+  heartbeat: profiles/ci-lead/HEARTBEAT.md
+memory:
+  strategy: session
+  store: sqlite
+handoffs:
+  - profile: deploy_agent
+    description: Hand off to the deploy agent when CI passes and a release is ready for promotion.

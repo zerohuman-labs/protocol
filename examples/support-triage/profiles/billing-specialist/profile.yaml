@@ -1,0 +1,22 @@
+kind: profile
+name: billing_specialist_agent
+role: billing_specialist
+runtime:
+  engine: target_agent_runtime
+  language: python
+model:
+  default: gpt-5.4
+budgets:
+  per_run_tokens_max: 40000
+  monthly_usd_max: 100
+concurrency:
+  max_active_tasks: 3
+capabilities:
+  - ref: capabilities/support-triage/capability.yaml
+identity:
+  soul: profiles/billing-specialist/SOUL.md
+operation:
+  heartbeat: profiles/billing-specialist/HEARTBEAT.md
+memory:
+  strategy: session
+  store: redis

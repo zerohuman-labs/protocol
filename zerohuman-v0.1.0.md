@@ -74,6 +74,10 @@ permissions:
     default_classification: pii
 approval:
   required: true
+implementation:
+  language: python
+  entrypoint: handler.py
+  function: handle
 interface:
   # JSON Schema for tool calls
   input_schema:
@@ -96,7 +100,7 @@ interface:
     required: [ok]
 ```
 
-This is intentionally compatible with “function tools” patterns: the target runtime describes function tools as wrapping local functions with a schema, and also provides approval gates and network policy controls in its tool execution options (notably for shell/container environments). ```yaml
+This is intentionally compatible with "function tools" patterns: the target runtime describes function tools as wrapping local functions with a schema, and also provides approval gates and network policy controls in its tool execution options (notably for shell/container environments). The optional `implementation` block binds a code file to the tool: `language` declares the runtime (python, typescript, etc.), `entrypoint` points to the file relative to the tool directory, and `function` names the callable. The runtime loads tool.yaml for schema validation and progressive disclosure, and only loads the implementation at execution time.
 # capabilities/acmecrm-specialist/capability.yaml
 kind: capability
 name: acmecrm_specialist
@@ -144,7 +148,7 @@ memory:
   strategy: session
   store: sqlite
 ```
-
+Profiles may also declare `handoffs` to enable multi-agent delegation. When a profile includes a `handoffs` array, the runtime exposes those as tools that transfer control to the named specialist profiles. Each specialist boots with its own soul, heartbeat, capabilities, and budget — they are distinct agents within a shared package. A package can contain multiple profiles in its `objects[]` array in `zerohuman.yaml`, and each profile directory contains its own `profile.yaml`, `SOUL.md`, and `HEARTBEAT.md`. This is how ZeroHuman supports multi-agent workflows: one package, multiple profiles, explicit handoff declarations.
 The “profile + heartbeat” combination is directly motivated by Paperclip’s model: agents wake on schedules, check work, enforce budgets, and operate within governance. The “session memory” choice aligns with the target runtime’s explicit support for sessions as a persistent memory layer. ```yaml
 # policies/pii-and-outbound.policy.yaml
 kind: policy
@@ -795,5 +799,12 @@ operation:
 memory:
   strategy: session
   store: redis
+handoffs:
+  - profile: billing_specialist_agent
+    description: Hand off billing, payment, and invoice issues.
+  - profile: refunds_specialist_agent
+    description: Hand off refund requests and credit disputes.
+  - profile: technical_specialist_agent
+    description: Hand off bugs, integration errors, and technical questions.
 ```
 

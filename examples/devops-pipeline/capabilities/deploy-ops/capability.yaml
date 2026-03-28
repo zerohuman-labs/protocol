@@ -1,0 +1,22 @@
+kind: capability
+name: deploy_ops
+version: 0.3.0
+description: Deployment and monitoring operations — release management, environment promotion, health checks, and incident response.
+tools:
+  - ref: tools/deploy/tool.yaml
+  - ref: tools/monitoring/tool.yaml
+skills:
+  - ref: skills/incident-response/SKILL.md
+policies:
+  - ref: policies/devops/policy.yaml
+evals:
+  suite: evals/deploy-ops/
+  required:
+    - deploy_promotion_flow
+    - rollback_on_failure
+    - incident_detection
+artefacts:
+  emits:
+    - type: deploy_record
+    - type: incident_report
+    - type: rollback_record

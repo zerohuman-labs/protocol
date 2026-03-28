@@ -1,0 +1,19 @@
+kind: capability
+name: ci_ops
+version: 0.3.0
+description: CI pipeline operations — trigger workflows, review PRs, and manage check runs.
+tools:
+  - ref: tools/github-ci/tool.yaml
+skills:
+  - ref: skills/pr-review/SKILL.md
+policies:
+  - ref: policies/devops/policy.yaml
+evals:
+  suite: evals/ci-ops/
+  required:
+    - pr_review_accuracy
+    - ci_failure_detection
+artefacts:
+  emits:
+    - type: pr_review_summary
+    - type: ci_status_report

@@ -1,0 +1,53 @@
+kind: tool
+name: deploy
+version: 0.2.0
+description: Trigger and manage deployments — create releases, promote to staging/production, and initiate rollbacks.
+transport: http
+base_url: ${DEPLOY_API_URL}
+auth:
+  scheme: api_key
+  token_source: secret_store
+  header: X-Deploy-Key
+permissions:
+  network:
+    allowed_domains:
+      - ${DEPLOY_DOMAIN}
+  data:
+    default_classification: internal
+approval:
+  required: true
+implementation:
+  language: python
+  entrypoint: handler.py
+  function: handle
+interface:
+  input_schema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      operation:
+        type: string
+        enum:
+          - create_release
+          - promote_to_staging
+          - promote_to_production
+          - rollback
+          - get_deploy_status
+        description: The deployment operation to perform.
+      payload:
+        type: object
+        description: Operation-specific parameters (version, environment, etc.).
+    required:
+      - operation
+  output_schema:
+    $schema: https://json-schema.org/draft/2020-12/schema
+    type: object
+    properties:
+      ok:
+        type: boolean
+      result:
+        type: object
+      error:
+        type: string
+    required:
+      - ok

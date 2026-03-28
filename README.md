@@ -126,9 +126,62 @@ This repository includes four example packages that demonstrate different use ca
 | Example | What it demonstrates | Complexity |
 |---------|---------------------|------------|
 | [`minimal-skill`](./examples/minimal-skill/) | Simplest possible ZeroHuman package — one skill, three files | Starter |
-| [`acmecrm-specialist`](./examples/acmecrm-specialist/) | Full capability pack — all 8 primitives in a realistic CRM integration | Complete |
-| [`support-triage`](./examples/support-triage/) | Multi-agent handoff — ticket routing, specialist delegation, queue ops | Intermediate |
 | [`standalone-tool`](./examples/standalone-tool/) | Single tool package — GitHub Issues API integration | Minimal |
+| [`acmecrm-specialist`](./examples/acmecrm-specialist/) | Full capability pack — all 8 primitives in a realistic CRM integration | Complete |
+| [`support-triage`](./examples/support-triage/) | Multi-agent handoff — 4 profiles (triage + billing/refunds/technical specialists) with shared capabilities | Advanced |
+| [`devops-pipeline`](./examples/devops-pipeline/) | Code-backed tools, multi-agent coordination, shared skills — CI lead → deploy → monitor chain | Advanced |
+
+### Multi-agent packages
+
+A single `zerohuman.yaml` can contain **multiple profiles**, each representing a distinct agent with its own soul, heartbeat, and budget. Profiles declare `handoffs` to route work between agents:
+
+```yaml
+# zerohuman.yaml (excerpt)
+objects:
+  - type: profile
+    id: triage-agent
+    path: profiles/triage
+  - type: profile
+    id: billing-specialist
+    path: profiles/billing
+  - type: profile
+    id: technical-specialist
+    path: profiles/technical
+```
+
+```yaml
+# profiles/triage/profile.yaml (excerpt)
+handoffs:
+  - profile: billing_specialist_agent
+    description: Hand off billing issues.
+  - profile: technical_specialist_agent
+    description: Hand off technical issues.
+```
+
+At runtime, handoffs are exposed as tools that transfer control to the named specialist. Each specialist boots with its own soul, heartbeat, and capabilities — they are distinct agents within a shared package. See the [`support-triage`](./examples/support-triage/) and [`devops-pipeline`](./examples/devops-pipeline/) examples.
+
+### Code-backed tools
+
+Tools can include an optional `implementation` block that binds a code file to the tool definition. The runtime loads `tool.yaml` for schema validation and progressive disclosure, and only loads the implementation at execution time:
+
+```yaml
+# tool.yaml (excerpt)
+implementation:
+  language: python
+  entrypoint: handler.py
+  function: handle
+```
+
+```python
+# handler.py
+from zerohuman_runtime import ToolContext
+
+async def handle(ctx: ToolContext, operation: str, payload: dict) -> dict:
+    """Called by the runtime when the agent invokes this tool."""
+    ...
+```
+
+See the [`devops-pipeline`](./examples/devops-pipeline/) example for full code-backed tool implementations.
 
 ### Quick validation
 
@@ -137,6 +190,7 @@ cd examples/minimal-skill && npx zerohuman validate
 cd examples/acmecrm-specialist && npx zerohuman validate
 cd examples/support-triage && npx zerohuman validate
 cd examples/standalone-tool && npx zerohuman validate
+cd examples/devops-pipeline && npx zerohuman validate
 ```
 
 ---

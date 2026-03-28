@@ -16,6 +16,15 @@ objects:
   - type: profile
     id: support-triage-agent
     path: profiles/support-triage
+  - type: profile
+    id: billing-specialist-agent
+    path: profiles/billing-specialist
+  - type: profile
+    id: refunds-specialist-agent
+    path: profiles/refunds-specialist
+  - type: profile
+    id: technical-specialist-agent
+    path: profiles/technical-specialist
   - type: policy
     id: support-controls
     path: policies/support
